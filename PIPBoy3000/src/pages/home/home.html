@@ -1,5 +1,10 @@
 <div class="screen">
   <div class="clock">{{currentDate | date :'shortTime'}}</div>
-  <div class="weather>"><ion-icon [name]='weatherIcon'></ion-icon> {{weather}} {{city}}</div>
-  <p>content here</p>
+  <div class="weather>">
+    <ion-icon [name]='weatherIcon'></ion-icon> {{weather}} {{city}}
+  </div>
+  <p *ngFor="let article of newsArticles; let i = index;">
+    {{article.title}}
+  </p>
+
 </div>

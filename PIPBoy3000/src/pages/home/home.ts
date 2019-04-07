@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { Article } from './article';
 
 @Component({
   selector: 'page-home',
@@ -13,22 +14,33 @@ export class HomePage implements OnInit {
   public weather: string;
   public weatherIcon: string;
   public city: string;
+  public newsArticles: Article[];
 
   constructor(public navCtrl: NavController, private http: HttpClient) {
 
   }
 
   ngOnInit() {
-    // clock
+    // clock - update every second
+    this.currentDate = new Date();
     setInterval(() => {
       this.currentDate = new Date();
     }, 1000);
 
+    // get weather immediately and every hour
     if (navigator.geolocation) {
-      const location = navigator.geolocation.getCurrentPosition(this.getWeather.bind(this));
-      console.log(navigator.geolocation);
+      navigator.geolocation.getCurrentPosition(this.getWeather.bind(this));
+      setInterval(() => {
+        navigator.geolocation.getCurrentPosition(this.getWeather.bind(this));
+      }, 360000);
     }
-  } j
+
+    // get news immediately and every 10 minutes
+    this.getNews();
+    setInterval(() => {
+      this.getNews();
+    }, 600000);
+  }
 
   getWeather(position) {
     const key = environment.weatherApiKey;
@@ -37,7 +49,6 @@ export class HomePage implements OnInit {
     const url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${key}`
 
     this.http.get(url).subscribe((result: any) => {
-      console.log(result);
       this.weather = result.weather[0].main;
       this.city = result.name;
 
@@ -74,5 +85,10 @@ export class HomePage implements OnInit {
 
   getNews() {
     const key = environment.newsApiKey;
+    const url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${key}&pageSize=3`
+
+    this.http.get(url).subscribe((results: any) => {
+      this.newsArticles = results.articles;
+    });
   }
 }
