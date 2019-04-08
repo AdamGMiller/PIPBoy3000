@@ -14,6 +14,8 @@ export class HomePage implements OnInit {
   public weather: string;
   public weatherIcon: string;
   public city: string;
+  public temperatureF: number;
+  public temperatureC: number;
   public newsArticles: Article[];
 
   constructor(public navCtrl: NavController, private http: HttpClient) {
@@ -51,6 +53,8 @@ export class HomePage implements OnInit {
     this.http.get(url).subscribe((result: any) => {
       this.weather = result.weather[0].main;
       this.city = result.name;
+      this.temperatureF = ((result.main.temp - 273.15) * 1.8) + 32;
+      this.temperatureC = result.main.temp - 273.15;
 
       switch (result.weather[0].main.toLowerCase()) {
         case 'rain':

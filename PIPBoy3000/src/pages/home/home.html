@@ -1,10 +1,18 @@
 <div class="screen">
-  <div class="clock">{{currentDate | date :'shortTime'}}</div>
-  <div class="weather>">
-    <ion-icon [name]='weatherIcon'></ion-icon> {{weather}} {{city}}
+  <div class="configure">
+    <ion-icon name="settings"></ion-icon>
   </div>
-  <p *ngFor="let article of newsArticles; let i = index;">
-    {{article.title}}
+  <div class="clock">{{currentDate | date :'shortTime'}}</div>
+  <div class="weather">
+    <div>
+      <ion-icon [name]='weatherIcon'></ion-icon>
+    </div>
+    <div>{{temperatureF | number:'1.0-0'}} ℉</div>
+    <div>{{temperatureC | number:'1.0-0' }} ℃</div>
+  </div>
+  <p *ngFor="let article of newsArticles; let i = index;" class="news-item">
+    <a [href]='article.url'>{{article.title}}</a>
   </p>
 
+  <div class="attribution">news courtesy of newsapi.org</div>
 </div>
