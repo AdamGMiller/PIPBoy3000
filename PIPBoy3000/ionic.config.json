@@ -1,5 +1,7 @@
 {
   "name": "PIPBoy3000",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular"
 }
