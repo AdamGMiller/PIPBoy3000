@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ModalController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Article } from './article';
@@ -8,6 +8,9 @@ import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
 import { Platform } from 'ionic-angular';
 import { LocationAccuracy } from "@ionic-native/location-accuracy/ngx";
 import { Diagnostic } from "@ionic-native/diagnostic/ngx";
+import { GamePage } from '../game/game.page';
+import { GameSettingsService } from '../../game-settings/game-settings.service';
+import { GameSettings } from '../../models/game-settings.model';
 
 @Component({
   selector: 'page-home',
@@ -22,6 +25,9 @@ export class HomePage implements OnInit {
   public temperatureF: number;
   public temperatureC: number;
   public newsArticles: Article[];
+  public configuring = false;
+  public width = 100;
+  public weatherLocation = '';
 
   constructor(
     public navCtrl: NavController,
@@ -30,11 +36,21 @@ export class HomePage implements OnInit {
     private geolocation: Geolocation,
     private locationAccuracy: LocationAccuracy,
     private diagnostic: Diagnostic,
-    private platform: Platform) {
+    private platform: Platform,
+    private gameSettingsService: GameSettingsService) {
 
   }
 
   ngOnInit() {
+    this.gameSettingsService.gameSettings.subscribe((gameSettings: GameSettings) => {
+      this.width = gameSettings.width * 100;
+      this.weatherLocation = gameSettings.weatherLocation;
+
+      if (this.weatherLocation != '') {
+        this.getWeather(null, null);
+      }
+    });
+
     // alias for promises
     var that = this;
 
@@ -75,7 +91,11 @@ export class HomePage implements OnInit {
 
   getWeather(lat: number, lon: number) {
     const key = environment.weatherApiKey;
-    const url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${key}`
+    let url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${key}`
+
+    if (this.weatherLocation != '') {
+      url = `http://api.openweathermap.org/data/2.5/weather?q=${this.weatherLocation}&appid=${key}`
+    }
 
     this.http.get(url).subscribe((result: any) => {
       this.weather = result.weather[0].main;
@@ -190,7 +210,13 @@ export class HomePage implements OnInit {
     });
   }
 
+  configure() {
+    this.configuring = true;
+  }
 
+  closeConfigure() {
+    this.configuring = false;
+  }
 
 }
 

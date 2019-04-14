@@ -14,3 +14,31 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+.content {
+    background-color: transparent;
+    overflow-y: auto;
+}
+
+.input-wrapper {
+    font-size: 3vw;
+    background-color: transparent;
+}
+
+.list-header {
+    background-color: transparent;
+    color: #090;
+    border-top-color: transparent;
+}
+
+.button-default-md {
+    font-size: 3vw;
+    background-color: #090;
+    margin: 10px;
+    width: 100%;
+}
+
+.button-default-md:hover {
+    background-color: #060;
+}
+

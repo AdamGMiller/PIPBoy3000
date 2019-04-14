@@ -1,18 +1,26 @@
-<div class="screen">
-  <div class="configure">
-    <ion-icon name="settings"></ion-icon>
-  </div>
-  <div class="clock">{{currentDate | date :'shortTime'}}</div>
-  <div class="weather">
-    <div>
-      <ion-icon [name]='weatherIcon'></ion-icon>
-    </div>
-    <div>{{temperatureF | number:'1.0-0'}} ℉</div>
-    <div>{{temperatureC | number:'1.0-0' }} ℃</div>
-  </div>
-  <p *ngFor="let article of newsArticles; let i = index;" class="news-item">
-    <a [href]='article.url'>{{article.title}}</a>
-  </p>
+<div class="background">
+  <div class="screen" [style.width.%]="width">
+    <div *ngIf="!configuring">
+      <div class="configure-button" (click)="configure()">
+        <ion-icon name="settings"></ion-icon>
+      </div>
+      <div class="clock">{{currentDate | date :'shortTime'}}</div>
+      <div class="weather">
+        <div>
+          <ion-icon [name]='weatherIcon'></ion-icon>
+        </div>
+        <div>{{temperatureF | number:'1.0-0'}} ℉</div>
+        <div>{{temperatureC | number:'1.0-0' }} ℃</div>
+      </div>
+      <p *ngFor="let article of newsArticles; let i = index;" class="news-item">
+        <a [href]='article.url'>{{article.title}}</a>
+      </p>
 
-  <div class="attribution">news courtesy of newsapi.org</div>
+      <div class="attribution">news courtesy of newsapi.org</div>
+    </div>
+
+    <div *ngIf="configuring" class="configure">
+      <app-game (close)="closeConfigure()"></app-game>
+    </div>
+  </div>
 </div>

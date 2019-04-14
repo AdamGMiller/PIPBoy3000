@@ -1,0 +1,31 @@
+<div class="game-options">
+  <ion-list class="button-list">
+
+    <button ion-button expand="full" size="large" (click)="return()">
+      Return
+    </button>
+
+    <ion-list-header>
+      Screen Width
+    </ion-list-header>
+    <ion-item class="range-slider">
+      <ion-range min="0" max="100" color="secondary" (ionChange)="updateWidth($event)"
+        [ngModel]="gameSettings.width * 100" debounce="100">
+        <ion-label slot="start">0</ion-label>
+        <ion-label slot="end">100</ion-label>
+      </ion-range>
+    </ion-item>
+
+    <ion-list-header>
+      Weather Location
+    </ion-list-header>
+    <ion-item class="range-slider">
+      <ion-input [ngModel]="gameSettings.weatherLocation" (ionChange)="updateWeatherLocation($event)"></ion-input>
+    </ion-item>
+
+    <button ion-button expand="block" size="large" (click)="exit()">
+      Exit PIPBoy
+    </button>
+
+  </ion-list>
+</div>
